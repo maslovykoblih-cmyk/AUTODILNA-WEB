@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autodílna | Profesionální servis</title>
-    <!-- Lucide Icons CDN -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Použití moderního fontu pro lepší vzhled -->
+    <!-- Lucide Icons CDN s defer pro neblokující načítání -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <!-- Použití moderního fontu -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         /* --- CSS Proměnné --- */
@@ -17,7 +17,6 @@
             --text-muted: #cbd5e1; /* Světle šedá pro doplňkový text */
             --accent-color: #e74c3c; /* Sytě červená */
             --accent-hover: #c0392b; /* Tmavší červená pro hover efekty */
-            --nav-height: 80px;
         }
 
         /* --- Reset a základní styly --- */
@@ -28,7 +27,7 @@
         }
 
         html {
-            scroll-behavior: smooth; /* Záložní CSS smooth scroll */
+            scroll-behavior: smooth;
         }
 
         body {
@@ -36,6 +35,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
+            overflow-x: hidden; /* Prevence horizontálního posunu */
         }
 
         .container {
@@ -87,6 +87,8 @@
             font-weight: 600;
             transition: background-color 0.3s ease, transform 0.2s ease;
             text-align: center;
+            cursor: pointer;
+            border: none;
         }
 
         .btn:hover, .cta-button:hover {
@@ -100,74 +102,88 @@
             margin-top: 1.5rem;
         }
 
-        /* --- Hlavička a Navigace --- */
+        /* --- Tmavá Hlavička --- */
         header {
-            background-color: rgba(26, 31, 36, 0.95);
-            backdrop-filter: blur(10px);
-            position: fixed;
+            background-color: var(--bg-color);
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--nav-height);
             z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            width: 100%;
+            /* Bez border-bottom pro plynulé navázání */
         }
 
-        nav {
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            min-height: 140px;
+        }
+
+        .logo-link {
+            display: flex;
             align-items: center;
             height: 100%;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1px;
+        .main-logo {
+            height: 140px;
+            width: auto;
+            object-fit: contain;
+            display: block;
         }
 
-        .logo span {
-            color: var(--accent-color);
+        .main-nav {
+            display: flex;
+            align-items: center;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
+            gap: 30px;
             align-items: center;
-            gap: 2rem;
         }
 
         .nav-links a {
-            font-weight: 600;
-            transition: color 0.3s ease;
+            text-decoration: none;
+            color: #ffffff; 
+            font-weight: 500;
+            transition: color 0.3s;
         }
 
         .nav-links a:hover {
             color: var(--accent-color);
         }
+        
+        .nav-links a.btn {
+            color: white;
+            font-weight: 600;
+        }
 
-        /* Hamburger menu tlačítko (skryté na desktopu) */
         .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
-            color: var(--text-main);
-            font-size: 1.5rem;
+            color: #ffffff;
+            font-size: 1.8rem;
             cursor: pointer;
         }
 
         /* --- Hero Sekce --- */
         .hero {
-            height: 100vh;
-            min-height: 600px;
+            min-height: calc(100vh - 140px); /* Přizpůsobeno výšce headeru */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
-            background: linear-gradient(rgba(26, 31, 36, 0.8), rgba(26, 31, 36, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><path d="M10 10 L90 90 M90 10 L10 90" stroke="%23ffffff" stroke-width="2"/></svg>') center/cover;
-            /* Výše je použit jemný vzor jako zástupný obrázek, v reálu by zde byla fotka dílny */
+            padding: 60px 20px 0;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
             margin-top: 0;
         }
 
@@ -185,7 +201,6 @@
 
         .grid {
             display: grid;
-            /* Auto-fit vytvoří responzivní grid bez nutnosti media queries pro samotný grid */
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
@@ -216,13 +231,37 @@
             color: var(--text-muted);
         }
 
-        /* --- Ikony ve službách --- */
         .card i {
             width: 48px;
             height: 48px;
             color: var(--accent-color);
             margin-bottom: 1rem;
             display: inline-block;
+        }
+
+        /* --- Obrázky a Galerie --- */
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 1.5rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         /* --- Footer --- */
@@ -233,68 +272,57 @@
             border-top: 1px solid rgba(255,255,255,0.05);
         }
 
-        footer p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* --- Responzivita (Mobilní zařízení) --- */
+        /* --- Responzivita --- */
         @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block; /* Zobrazit hamburger na mobilu */
-            }
-
+            .header-container { height: 70px; }
+            .main-logo { height: 70px; }
+            .mobile-menu-btn { display: block; }
             .nav-links {
                 position: fixed;
-                top: var(--nav-height);
+                top: 70px;
                 left: -100%;
                 width: 100%;
-                height: calc(100vh - var(--nav-height));
-                background-color: rgba(26, 31, 36, 0.98);
+                height: calc(100vh - 70px);
+                background-color: var(--bg-color);
                 flex-direction: column;
-                justify-content: center;
-                gap: 2.5rem;
+                padding-top: 2rem;
+                gap: 2rem;
                 transition: left 0.3s ease;
             }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .nav-links a {
-                font-size: 1.5rem;
-            }
-            
-            .nav-links .btn {
-                margin-top: 1rem;
-            }
+            .nav-links.active { left: 0; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <nav class="container">
-            <div class="logo">DÍLNA<span>LOGO</span></div>
+        <div class="header-container">
+            <a href="#" class="logo-link">
+                <img src="img/logo.png" alt="Logo Autodílna" class="main-logo" onerror="this.style.display='none'">
+                <!-- Záložní text pokud logo není k dispozici -->
+                <span id="logo-text" style="font-weight:800; font-size:1.5rem; display:none;">AUTODÍLNA</span>
+            </a>
+            
             <button class="mobile-menu-btn" aria-label="Menu" id="menuBtn">☰</button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#sluzby" class="scroll-link">Služby</a></li>
-                <li><a href="#katalog" class="scroll-link">Katalog</a></li>
-                <li><a href="#o-nas" class="scroll-link">O nás</a></li>
-                <li><a href="#kontakt" class="btn scroll-link">Kontakt</a></li>
-            </ul>
-        </nav>
+            
+            <nav class="main-nav">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#sluzby" class="scroll-link">Služby</a></li>
+                    <li><a href="#katalog" class="scroll-link">Katalog</a></li>
+                    <li><a href="#o-nas" class="scroll-link">O nás</a></li>
+                    <li><a href="#kontakt" class="btn scroll-link">Kontakt</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
-        <!-- Hero sekce (Úvodní obrazovka) -->
-        <section class="hero" id="domu">
+        <section class="hero" id="domu" style="background-image: linear-gradient(rgba(26, 31, 36, 0.8), rgba(26, 31, 36, 0.9)), url('img/uvod.jpg');">
             <h1>Poctivý servis pro vaše auto</h1>
             <p>Jsme profesionálové. Rychle, kvalitně a za férové ceny vrátíme vaše auto bezpečně na cestu.</p>
-            <a href="tel:+420603247966" class="cta-button">Zavolat +420 123 456 789</a>
+            <a href="tel:+420603247966" class="cta-button">Zavolat +420 603 247 966</a>
         </section>
 
-        <!-- Sekce Služby s CSS Gridem -->
         <section id="sluzby" class="container">
             <h2>Naše služby</h2>
             <div class="grid">
@@ -331,79 +359,115 @@
             </div>
         </section>
         
-        <!-- Prázdné sekce pro ukázku scrollování -->
-        <section id="katalog" style="padding: 100px 20px; text-align: center; min-height: 50vh; background-color: var(--surface-color);">
+        <section id="katalog" style="padding: 100px 20px; text-align: center; background-color: var(--surface-color);">
             <div class="container">
                 <h2>Katalog</h2>
-                <p style="color: var(--text-muted)">Zde by byl katalog dílů nebo ukázky prací...</p>
+                <div class="gallery-grid">
+                    <img src="img/prace1.jpg" alt="Práce 1" onerror="this.src='https://via.placeholder.com/400x250?text=Servis+1'">
+                    <img src="img/prace2.jpg" alt="Práce 2" onerror="this.src='https://via.placeholder.com/400x250?text=Servis+2'">
+                    <img src="img/prace3.jpg" alt="Práce 3" onerror="this.src='https://via.placeholder.com/400x250?text=Servis+3'">
+                </div>
             </div>
         </section>
 
-        <section id="o-nas" style="padding: 100px 20px; text-align: center; min-height: 50vh;">
+        <section id="o-nas" style="padding: 100px 20px; text-align: center;">
             <div class="container">
-                <h2>O nás</h2>
-                <p style="color: var(--text-muted)">Historie naší dílny a náš tým expertů...</p>
+                <h2>Zkušenosti a poctivost, na které se můžete spolehnout</h2>
+                <p style="max-width: 800px; margin: 0 auto; color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">
+                    Za naší dílnou nestojí žádný anonymní řetězec, ale dva parťáci a zkušení mechanici – Jiří a Virgil. Autům a mechanice se věnujeme celý život a rukama nám prošlo snad úplně všechno. Jiřímu je 55 let a celý svůj profesní život razí jediné pravidlo: práce se musí dělat pořádně, nebo vůbec.
+                    <br><br>
+                    V dnešní době plné rychlých a odbytých řešení si zakládáme na výjimečně poctivém přístupu. Nejsme tu od toho, abychom z vás tahali peníze za zbytečnosti. U nás nenajdete žádné skryté poplatky, polovičatá řešení ani výmluvy. Pokud se na autě něco opravuje, uděláme to pečlivě a tak, jako by to bylo naše vlastní. Férové jednání, tvrdá práce a precizní řemeslo – to je náš standard, za kterým si pevně stojíme.
+                </p>
+                <div class="about-image" style="margin-top: 3rem;">
+                    <img src="img/tata.jpg" alt="Majitel v dílně" class="img-fluid" onerror="this.src='https://via.placeholder.com/800x400?text=Nas+Tym'">
+                </div>
             </div>
         </section>
 
-        <section id="kontakt" style="padding: 100px 20px; text-align: center; min-height: 50vh; background-color: var(--surface-color);">
+        <section id="kontakt" style="padding: 100px 20px; text-align: center; background-color: var(--surface-color);">
             <div class="container">
-                <h2>Kontaktujte nás</h2>
-                <p style="color: var(--text-muted)">Formulář, mapa a otevírací doba...</p>
+                <h2>Kde nás najdete</h2>
+                <div class="contact-wrapper" style="max-width: 800px; margin: 0 auto;">
+                    <div class="contact-info" style="margin-bottom: 2rem;">
+                        <p style="font-size: 1.2rem; margin-bottom: 0.5rem;"><strong>Adresa:</strong> Ulice 123, Město</p>
+                        <p style="font-size: 1.2rem;"><strong>Tel:</strong> <a href="tel:+420603247966">+420 603 247 966</a></p>
+                    </div>
+                    <div class="map" style="background: #333; width: 100%; height: 350px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #666;">
+                        <div style="text-align: center;">
+                            <i data-lucide="map-pin" style="width: 48px; height: 48px; margin-bottom: 10px;"></i>
+                            <p>Zde bude Google Mapa</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2024 Autodílna. Všechna práva vyhrazena. |</p>
+        <p>&copy; 2024 Autodílna. Všechna práva vyhrazena.</p>
     </footer>
 
-    <!-- JavaScript -->
     <script>
-        // 1. Otevírání mobilního menu
-        const menuBtn = document.getElementById('menuBtn');
-        const navLinks = document.getElementById('navLinks');
-
-        menuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            // Změna ikony hamburgeru
-            if (navLinks.classList.contains('active')) {
-                menuBtn.innerHTML = '✕'; // Křížek
-            } else {
-                menuBtn.innerHTML = '☰'; // Hamburger
+        // Funkce pro bezpečné spuštění skriptů
+        function initApp() {
+            // Inicializace Lucide ikon s kontrolou a opakovaným pokusem
+            function initIcons(retries = 5) {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                } else if (retries > 0) {
+                    setTimeout(() => initIcons(retries - 1), 200);
+                }
             }
-        });
+            initIcons();
 
-        // 2. Smooth scroll a zavření menu po kliknutí na odkaz v mobilní verzi
-        document.querySelectorAll('.scroll-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Skriptovaný smooth scroll (podpora i pro starší prohlížeče)
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetSection = document.querySelector(targetId);
-                
-                if(targetSection) {
-                    // Výpočet pozice s odečtením výšky fixní hlavičky
-                    const headerOffset = 80; 
-                    const elementPosition = targetSection.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-      
-                    window.scrollTo({
-                         top: offsetPosition,
-                         behavior: "smooth"
-                    });
-                }
+            const menuBtn = document.getElementById('menuBtn');
+            const navLinks = document.getElementById('navLinks');
+            const logoImg = document.querySelector('.main-logo');
+            const logoText = document.getElementById('logo-text');
 
-                // Zavření mobilního menu, pokud je otevřené
-                if(navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
-                    menuBtn.innerHTML = '☰';
-                }
+            // Pokud se nenačte obrázek loga, ukaž text
+            logoImg.onerror = function() {
+                this.style.display = 'none';
+                logoText.style.display = 'block';
+            };
+
+            // Mobilní menu
+            if (menuBtn && navLinks) {
+                menuBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    menuBtn.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+                });
+            }
+
+            // Smooth scroll
+            document.querySelectorAll('.scroll-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if(targetSection) {
+                        const headerHeight = document.querySelector('header').offsetHeight;
+                        window.scrollTo({
+                            top: targetSection.offsetTop - headerHeight,
+                            behavior: "smooth"
+                        });
+                    }
+
+                    if(navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        menuBtn.innerHTML = '☰';
+                    }
+                });
             });
-        });
+        }
 
-        // Inicializace Lucide ikon
-        lucide.createIcons();
+        // Spustit hned jak je to možné
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
     </script>
 </body>
 </html>
