@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autodílna | Profesionální servis</title>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Použití moderního fontu pro lepší vzhled -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -214,6 +216,15 @@
             color: var(--text-muted);
         }
 
+        /* --- Ikony ve službách --- */
+        .card i {
+            width: 48px;
+            height: 48px;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
         /* --- Footer --- */
         footer {
             background-color: #111518;
@@ -288,27 +299,32 @@
             <h2>Naše služby</h2>
             <div class="grid">
                 <div class="card">
+                    <i data-lucide="scan"></i>
                     <h3>Diagnostika</h3>
                     <p>Moderní systémy si žádají moderní přístup. Odhalíme skryté závady pomocí nejnovější diagnostiky dříve, než se stanou velkým problémem.</p>
                 </div>
                 <div class="card">
+                    <i data-lucide="disc"></i>
                     <h3>Brzdy</h3>
                     <p>Kompletní servis brzdového systému. Výměna destiček, kotoučů i brzdové kapaliny pro vaši maximální bezpečnost na silnici.</p>
                 </div>
                 <div class="card">
+                    <i data-lucide="clipboard-check"></i>
                     <h3>Příprava STK</h3>
                     <p>Příprava a kompletní kontrola vašeho vozu před technickou prohlídkou. Vyřídíme STK a emise za vás bez stresu.</p>
                 </div>
-                <!-- Přidáno pár dalších karet pro ukázku Gridu -->
                 <div class="card">
+                    <i data-lucide="droplet"></i>
                     <h3>Výměna oleje</h3>
                     <p>Rychlá výměna motorového oleje a filtrů na počkání. Používáme pouze kvalitní oleje doporučené výrobci.</p>
                 </div>
                 <div class="card">
+                    <i data-lucide="circle-dot"></i>
                     <h3>Pneuservis</h3>
                     <p>Přezutí, vyvážení a oprava defektů. Nabízíme také uskladnění sezónních pneumatik v našich prostorech.</p>
                 </div>
                 <div class="card">
+                    <i data-lucide="thermometer"></i>
                     <h3>Klimatizace</h3>
                     <p>Čištění, dezinfekce a plnění klimatizací. Zajišťujeme také hledání úniků a opravy celého systému.</p>
                 </div>
@@ -385,6 +401,9 @@
                 }
             });
         });
+
+        // Inicializace Lucide ikon
+        lucide.createIcons();
     </script>
 </body>
 </html>
